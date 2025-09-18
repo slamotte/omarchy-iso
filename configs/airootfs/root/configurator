@@ -60,7 +60,7 @@ user_form() {
   done
 
   while true; do
-    password=$(gum input --placeholder "Used for user + root + encryption" --prompt.foreground="#845DF9" --password --prompt "Password> ") || abort
+    password=$(gum input --placeholder "Used for user + root" --prompt.foreground="#845DF9" --password --prompt "Password> ") || abort
     password_confirmation=$(gum input --placeholder "Must match the password you just typed" --prompt.foreground="#845DF9" --password --prompt "Confirm> ") || abort
 
     if [[ -n "$password" && "$password" == "$password_confirmation" ]]; then
@@ -192,13 +192,11 @@ echo "$full_name" >user_full_name.txt
 echo "$email_address" >user_email_address.txt
 
 # Escape username and password for safe inclusion
-password_escaped=$(echo -n "$password" | jq -Rsa)
 password_hash_escaped=$(echo -n "$password_hash" | jq -Rsa)
 username_escaped=$(echo -n "$username" | jq -Rsa)
 
 cat <<-_EOF_ >user_credentials.json
 {
-    "encryption_password": $password_escaped,
     "root_enc_password": $password_hash_escaped,
     "users": [
         {
@@ -240,7 +238,7 @@ cat <<-_EOF_ >user_configuration.json
     "bootloader": "Limine",
     "custom_commands": [],
     "disk_config": {
-        "btrfs_options": { 
+        "btrfs_options": {
           "snapshot_config": {
             "type": "Snapper"
           }
@@ -300,14 +298,7 @@ cat <<-_EOF_ >user_configuration.json
                 ],
                 "wipe": true
             }
-        ],
-        "disk_encryption": {
-            "encryption_type": "luks",
-            "lvm_volumes": [],
-            "iter_time": 2000,
-            "partitions": [ "8c2c2b92-1070-455d-b76a-56263bab24aa" ],
-            "encryption_password": $password_escaped
-        }
+        ]
     },
     "hostname": "$hostname",
     "kernels": [ "$kernel_choice" ],
