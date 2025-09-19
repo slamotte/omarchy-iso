@@ -38,6 +38,7 @@ OMARCHY_INSTALLER_REF="${OMARCHY_INSTALLER_REF:-master}"
 DOCKER_ARGS=(
   --rm
   --privileged
+  --platform linux/amd64 # Suppress warnings if building on Apple Silicon
   -e "OMARCHY_INSTALLER_REPO=$OMARCHY_INSTALLER_REPO"
   -e "OMARCHY_INSTALLER_REF=$OMARCHY_INSTALLER_REF"
   -v "$BUILD_RELEASE_PATH/:/out/"
