@@ -49,9 +49,10 @@ DOCKER_ARGS=(
 )
 
 # Use local pacman cache if you already have one on host to speed up repeat runs
+PACMAN_CACHE="${PACMAN_CACHE:-/var/cache/pacman/pkg}"
 if [ -d "$PACMAN_CACHE" ]; then
   echo "Using host pacman cache at $PACMAN_CACHE"
-  DOCKER_ARGS+=(-v "$PACMAN_CACHE:/var/cache/pacman")
+  DOCKER_ARGS+=(-v "$PACMAN_CACHE:/var/cache/pacman/pkg")
 fi
 
 # Mount the build cache directory where packages are downloaded
