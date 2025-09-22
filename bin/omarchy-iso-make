@@ -51,7 +51,6 @@ DOCKER_ARGS=(
 # Use local pacman cache if you already have one on host to speed up repeat runs
 PACMAN_CACHE="${PACMAN_CACHE:-/var/cache/pacman/pkg}"
 if [ -d "$PACMAN_CACHE" ]; then
-  echo "Using host pacman cache at $PACMAN_CACHE"
   DOCKER_ARGS+=(-v "$PACMAN_CACHE:/var/cache/pacman/pkg")
 fi
 
@@ -59,6 +58,7 @@ fi
 if [[ -z "$NO_CACHE" ]]; then
   # using a dated dir on the host to refresh daily if building multiple times
   BUILD_DATE=$(date +%Y-%m-%d)
+  # add something to wipe old caches
   OFFLINE_REPO_BUILD_CACHE_DIR="$HOME/.cache/omarchy/iso_${BUILD_DATE}/airootfs/var/cache/omarchy"
   mkdir -p "$OFFLINE_REPO_BUILD_CACHE_DIR"
   # Mount to /var/cache/airootfs/var/cache/omarchy since that's where repo packages go in the ISO
