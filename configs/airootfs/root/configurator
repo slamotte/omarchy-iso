@@ -32,19 +32,28 @@ notice() {
 welcome() {
   step "Disclaimer and Warning"
 
-  gum style --border normal --margin "1" --padding "1 2" --align center --width 100 <<EOF
+  local welcome=$(gum style --border normal --margin "1" --padding "1 2" --align center --width 100 <<EOF
 Welcome to the Omarchy-Sunrise installer!
 
 This install is identical to the official Omarchy installer, except that it enables foolproof remote access to your machine using the Moonrise client. Perfect for remote development.
 EOF
+  )
 
-  gum style --border normal --margin "1" --padding "1 2" --align center --width 100 --border-foreground "#ff0" --foreground "#ff0" <<EOF
+  local warning=$(gum style --border normal --margin "1" --padding "1 2" --align center --width 100 --border-foreground "#ff0" --foreground "#ff0" <<EOF
 CAVEAT EMPTOR: Unlike an official Omarchy setup, this one does NOT support disk encryption! This is because remote unlocking of encrypted disks is not yet supported. As such, your data will be stored UNENCRYPTED on disk, and could be read if someone gains access to it.
 EOF
+  )
 
-  gum style --border normal --margin "1" --padding "1 2" --align center --width 100 --border-foreground "#f00" --foreground "#f00" <<EOF
+  local danger=$(gum style --border normal --margin "1" --padding "1 2" --align center --width 100 --border-foreground "#f00" --foreground "#f00" <<EOF
 If this is of concern to you, please exit now and use the official Omarchy installer instead.
 EOF
+  )
+
+  local prompts=$(gum join --align center --vertical "$welcome" "$warning" "$danger")
+
+  local terminal_size=$(stty size)
+  local terminal_width=${terminal_size#* }
+  gum style --align center --width "$terminal_width" "$prompts"
 
   if ! gum confirm "Proceed with installation?" --affirmative 'I accept the risks, let''s go!' --negative 'HARD NO I did not sign up for this!' --default=false; then
     abort
