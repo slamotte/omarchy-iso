@@ -29,7 +29,7 @@ notice() {
 
 # STEP 0: INTRODUCTION/WARNING
 
-source "$OMARCHY_INSTALL/sunshine/preflight/welcome_message.sh"
+source "$OMARCHY_INSTALL/custom/sunshine/configurator/welcome_message.sh"
 
 # STEP 1: KEYBOARD LAYOUT
 
