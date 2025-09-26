@@ -1,5 +1,0 @@
-#!/bin/bash
-
-OMARCHY_INSTALLER_REPO=slamotte/omarchy \
-OMARCHY_INSTALLER_REF=sunshine \
-bin/omarchy-iso-make
