@@ -31,6 +31,15 @@ install_omarchy() {
   chroot_bash -lc "source /home/$OMARCHY_USER/.local/share/omarchy/install.sh || bash"
 }
 
+reboot_system() {
+  # Use systemctl if available, otherwise fallback to reboot command
+  if command -v systemctl &>/dev/null; then
+    systemctl reboot --no-wall 2>/dev/null
+  else
+    reboot 2>/dev/null
+  fi
+}
+
 # Set Tokyo Night color scheme for the terminal
 set_tokyo_night_colors() {
   if [[ $(tty) == "/dev/tty"* ]]; then
@@ -123,4 +132,11 @@ if [[ $(tty) == "/dev/tty1" ]]; then
   run_configurator
   install_arch
   install_omarchy
+
+  # The Omarchy setup script will have created this file if a reboot was requested
+  REBOOT_REQUESTED=/mnt/home/$OMARCHY_USER/.local/share/omarchy/install/reboot-requested
+  if [[ -f $REBOOT_REQUESTED ]]; then
+    rm $REBOOT_REQUESTED
+    reboot_system
+  fi
 fi
